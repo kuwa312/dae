@@ -1,10 +1,10 @@
 #include<stdio.h>
 #include<string.h>
 
-#define M 1000000
+#define M 1046527 //hash tableのサイズ、素数　1000000の次の素数、衝突を避けるため
 #define L 14
 
-char H[M][L]; //hash table [1000000][14]
+char H[M][L]; //hash table [1046527][14]
 
 // 文字列to数値
 int getChar(char ch){
