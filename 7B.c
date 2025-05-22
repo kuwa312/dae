@@ -4,7 +4,7 @@
 
 struct Node {
     int parent;
-    int left;//左の子
+    int left; // 左の子
     int right;
 };
 
@@ -20,88 +20,80 @@ void set_depth(int id, int depth) {
 }
 
 int set_height(int id) {
-    int 
+    int hl = 0;
+    int hr = 0;
+    if (T[id].left != NIL) {
+        hl = set_height(T[id].left) + 1; // 左の子の高さ
+    }
+    if (T[id].right != NIL) {
+        hr = set_height(T[id].right) + 1; // 右の子の高さ
+    }
+    return H[id] = hl > hr ? hl : hr; // 高さは大きい方を返す
+}
+
+int get_sibling(int id) { // 兄弟の接点番号を返す
+    if (T[id].parent == NIL) return NIL; // 親がいないときはNILを返す．（自信が根なので兄弟はいない）
+    if (T[T[id].parent].left == id) { // idが親の左の子のとき
+        return T[T[id].parent].right; // 親の右の子を返す
+    } else {
+        return T[T[id].parent].left; // 親の左の子を返す
+    }
+    return NIL; // ここには来ないはず
+}
+
+
+void print(int id) {
+    printf("node %d: ", id);
+    printf("parent = %d, ", T[id].parent);
+    printf("sibling = %d, ", get_sibling(id));
+    int deg = 0; // 子の数，0 or 1 or 2
+    if (T[id].left != NIL) {
+        deg++;
+    }
+    if (T[id].right != NIL) {
+        deg++;
+    }
+    printf("degree = %d, ", deg);
+    printf("depth = %d, ", D[id]);
+    printf("height = %d, ", H[id]);
+
+    if (T[id].parent == NIL) { // 親がいない＝根
+        printf("root\n"); // 
+    } else if (T[id].left == NIL && T[id].right == NIL) { // 子がいない＝葉
+        printf("leaf\n");
+    } else {
+        printf("internal node\n"); // その他＝内部ノード
+    }
 }
 
 int main(void) {
+    int id, l, r, root = 0;
+
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        T[i].parent = NIL;
+    }
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d %d %d", &id, &l, &r);
+        T[id].left = l;
+        T[id].right = r;
+        if (l != NIL) T[l].parent = id; // 左の子の親はid
+        if (r != NIL) T[r].parent = id;
+    }
+
+    for ( int i = 0; i < n; i++ ) {
+        if (T[i].parent == NIL) {
+            root = i;
+        }
+    }
+
+    set_depth(root, 0); 
+    set_height(root);   
+
+    for (int i = 0; i < n; i++) {
+        print(i);
+    }
+
     return 0;
 }
-
-// int get_depth(int id) {
-//     int depth = 0;
-//     while (T[id].parent != NIL) {//接点の親がNILでない限り
-//         id = T[id].parent;
-//         depth ++;
-//     }
-//     return depth;
-// }
-
-
-
-// n
-// id(接点番号) k(子の次数) c_1 c_2 ... c_k
-// id k c_0 c_1 ... c_{k-1}
-
-
-// void print_child(int id) {
-//     printf("[");
-//     if (T[id].left_child != NIL) {
-//         printf("]\n");
-//         return;
-//     }
-//     printf("%d",T[id].left_child);
-//     int c = T[id].left_child;
-//     while(T[c].right_bro != NIL) {
-//         c = T[c].right_bro;
-//         printf(",%d", c);
-//     }
-//     printf("]\n");
-
-// }
-
-
-// void print(int id) {
-//     printf("node %d: ", id);
-//     printf("parent = %d, ", T[id].parent);
-//     printf("depth = %d, ", get_depth(id));
-//     if (T[id].parent == NIL) {
-//         printf("root, ");
-//     } else if (T[id].left_child == NIL) {
-//         printf("leaf, ");
-//     } else {
-//         printf("internal node, ");
-//     }
-//     print_child(id);
-// }
-
-
-
-// int main(void) {
-//     int i, n, id, k, j, c;
-//     int pre_c = NIL;
-//     scanf("%d", &n);
-//     // 初期化
-//     for (i=0; i<n; i++) {
-//         T[i].parent = T[i].left_child = T[i].right_bro = NIL;
-//     }
-
-//     for (i=0; i<n; i++) {
-//         scanf("%d", &id);
-//         scanf("%d", &k);
-//         for (j=0; j<k; j++) { 
-//             scanf("%d", &c); //c_j
-//             if (j==0) {// 一つ目の子がleft_child
-//                 T[id].left_child = c;
-//             } else {
-//                 T[pre_c].right_bro = c;
-//             }
-//             T[c].parent = id;
-//             pre_c = c;
-//         }
-//     }    
-
-//     for (i=0; i<n; i++) {
-//         print(i);
-//     }
-//     return 0;
-// }
