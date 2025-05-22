@@ -1,4 +1,8 @@
-#拡張子が.pngの全ファイルを無視
 *.png          
-# tempで始まる全ファイルやディレクトリを無視
-# temp*        
+*.exe
+*.out
+*.app
+*.idb
+*.pdb
+
+.env
