@@ -58,7 +58,8 @@ void printPreorder(Node node) {
     printf(" %d", node->key);
     printPreorder(node->left);
     printPreorder(node->right);
-}
+}   
+
 
 int main (void) {
     int i;
