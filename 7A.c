@@ -25,6 +25,7 @@ int get_depth(int id) {
 
 
 
+
 // n
 // id(接点番号) k(子の次数) c_1 c_2 ... c_k
 // id k c_0 c_1 ... c_{k-1}

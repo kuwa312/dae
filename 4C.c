@@ -24,6 +24,7 @@ long long getKey(char str[]){
   return sum;
 }
 
+
 int h1(int key){ return key % M; }
 int h2(int key){ return 1 + (key % (M-1)); }
 int h(int key, int i) {
