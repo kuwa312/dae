@@ -9,44 +9,26 @@ struct node {
     int key;
 };
 
-typedef struct node * Node; 
+typedef struct node * Node; //Nodeはnodeへのポインタ型
 
 Node root; //rootは根へのポインタ
 
-Node getMinimum(Node node){ //nodeを根とする部分木の中で最小のキーを持つ接点を返す
-    while (node->left != NIL) { 
-        node = node->left; 
+Node getMinimum(Node node){ //接点nodeを根とする部分木の中で最小のキーを持つ接点を返す
+    while (node->left != NIL) { // 左の子が存在する限り
+        node = node->left; // 左の子に移動
     }
     return node; 
 }
 
-Node treeSuccessor(Node node){ // nodeの次接点を返す．nodeの次接点とは，中間順巡回でnodeの次に訪問される接点
-    if (node->right != NIL) { // 右の子が存在する場合
-        return getMinimum(node->right); // 右の子の最小値を返す
-    }
-
-    // (以降は、このコードでは実行されることはないが、削除以外の用途でも使えるような汎用性を持たせるための実装)
-    // 右の子が存在しない場合、親をたどっていき、最初に「左の子になっているような接点の親」が次接点となる
-    Node parentNode = node->parent; // 親ノードを取得
-    while (parentNode != NIL && node == parentNode->right) { // nodeが親の右の子である間
-        node = parentNode; // nodeを親に更新
-        parentNode = parentNode->parent; // 親ノードを更新
-    }
-    return parentNode; // 親ノードを返す（次接点）
-    
-}
-
 void treeDelete(Node node) {
     Node delNode; // 削除するノード
-    Node childNode; // delNodeの子
+    Node childNode; // delNodeの親の子となるノード
 
-    // delNodeを設定
     if (node->left == NIL || node->right == NIL) { // nodeが葉 or 1つの子をもつ
         delNode = node;
     } else { // 2つの子をもつ
         delNode = treeSuccessor(node); // delNodeはnodeの次接点
         }
-
     // childNodeを設定
     if (delNode->left != NIL) { // 左の子が存在する場合
         childNode = delNode->left; // childNodeは左の子
@@ -54,8 +36,8 @@ void treeDelete(Node node) {
         childNode = delNode->right; // childNodeは右の子
     }
 
-    if (childNode != NIL) { // childNodeが存在する場合
-        childNode->parent = delNode->parent; 
+    if (childNode != NIL) { // childNodeが存在する場合つまり，delNodeが子をもつとき
+        childNode->parent = delNode->parent; // childNodeの親をdelNodeの親に設定
     }
     if (delNode->parent == NIL) { // delNodeが根の場合
         root = childNode; // 根をchildNodeに更新
@@ -69,7 +51,6 @@ void treeDelete(Node node) {
         node->key = delNode->key; 
     }
 
-    free(delNode); 
 }
 
 Node find(Node node, int key) {
@@ -130,6 +111,7 @@ void printPreorder(Node node) {
     printPreorder(node->right);
 }   
 
+
 int main (void) {
     int i;
     int n; // ノード数
@@ -165,6 +147,7 @@ int main (void) {
                 printf("no\n"); // ノードが見つからない場合
             }
         }                                               
+        
     }
     return 0;
 }

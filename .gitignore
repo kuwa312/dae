@@ -4,5 +4,6 @@
 *.app
 *.idb
 *.pdb
+*.pdf
 
 .env
