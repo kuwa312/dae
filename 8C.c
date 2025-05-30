@@ -48,10 +48,11 @@ void treeDelete(Node node) {
         }
 
     // childNodeを設定
-    if (delNode->left != NIL) { // 左の子が存在する場合
-        childNode = delNode->left; // childNodeは左の子
-    } else { // 左の子が存在しない場合
-        childNode = delNode->right; // childNodeは右の子
+    // delNodeに左の子が存在する時，childNodeは左の子，存在しない時は右の子
+    if (delNode->left != NIL) { 
+        childNode = delNode->left; 
+    } else { 
+        childNode = delNode->right; // 右の子も存在しないときは，childNodeはNIL
     }
 
     if (childNode != NIL) { // childNodeが存在する場合
